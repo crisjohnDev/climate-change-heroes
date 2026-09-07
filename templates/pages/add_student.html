@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Student
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .student-page {
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    .student-page-header {
+        margin-bottom: 25px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 18px;
+    }
+
+    .back-link:hover {
+        color: var(--primary);
+    }
+
+    .student-page-header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 6px;
+    }
+
+    .student-page-header p {
+        color: var(--text-muted);
+        font-size: 14px;
+    }
+
+    .student-form-card {
+        background: var(--surface);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .student-form-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .student-form-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        background: var(--primary-light);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .student-form-header h2 {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text-main);
+    }
+
+    .student-form-header p {
+        margin-top: 3px;
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+    .error-box {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        padding: 13px 15px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        margin-bottom: 22px;
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-main);
+    }
+
+    .required {
+        color: #ef4444;
+    }
+
+    .form-control {
+        width: 100%;
+        height: 48px;
+        padding: 0 14px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        color: var(--text-main);
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow:
+            0 0 0 3px rgba(5, 150, 105, 0.10);
+    }
+
+    .form-help {
+        display: block;
+        margin-top: 7px;
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 22px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 44px;
+        padding: 0 18px;
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .btn-secondary {
+        background: var(--surface);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+        background: var(--surface-subtle);
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        border: 1px solid var(--primary);
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-hover);
+    }
+
+    @media (max-width: 600px) {
+
+        .student-form-card {
+            padding: 24px 20px;
+        }
+
+        .student-page-header h1 {
+            font-size: 23px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+<div class="student-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="student-page-header">
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="back-link"
+        >
+            ← Back to Dashboard
+        </a>
+
+        <h1>
+            Add Student
+        </h1>
+
+        <p>
+            Register a new student to your learning game.
+        </p>
+
+    </div>
+
+
+    <!-- FORM CARD -->
+
+    <div class="student-form-card">
+
+        <div class="student-form-header">
+
+            <div class="student-form-icon">
+                🎓
+            </div>
+
+            <div>
+
+                <h2>
+                    Student Information
+                </h2>
+
+                <p>
+                    Enter the student's basic information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        {% if error %}
+
+            <div class="error-box">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+
+                    Student Name
+
+                    <span class="required">*</span>
+
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter student's full name"
+                    value="{{ name|default:'' }}"
+                    maxlength="255"
+                    required
+                    autofocus
+                >
+
+                <span class="form-help">
+                    Enter the student's complete name.
+                </span>
+
+            </div>
+
+
+            <!-- GRADE -->
+
+            <div class="form-group">
+
+                <label for="grade">
+
+                    Grade Level
+
+                    <span class="required">*</span>
+
+                </label>
+
+                <select
+                    id="grade"
+                    name="grade"
+                    class="form-control"
+                    required
+                >
+
+                    <option value="">
+                        Select Grade Level
+                    </option>
+
+                    <option
+                        value="Grade 7"
+                        {% if grade == "Grade 7" %}
+                            selected
+                        {% endif %}
+                    >
+                        Grade 7
+                    </option>
+
+                    <option
+                        value="Grade 8"
+                        {% if grade == "Grade 8" %}
+                            selected
+                        {% endif %}
+                    >
+                        Grade 8
+                    </option>
+
+                    <option
+                        value="Grade 9"
+                        {% if grade == "Grade 9" %}
+                            selected
+                        {% endif %}
+                    >
+                        Grade 9
+                    </option>
+
+                    <option
+                        value="Grade 10"
+                        {% if grade == "Grade 10" %}
+                            selected
+                        {% endif %}
+                    >
+                        Grade 10
+                    </option>
+
+                    <option
+                        value="Grade 11"
+                        {% if grade == "Grade 11" %}
+                            selected
+                        {% endif %}
+                    >
+                        Grade 11
+                    </option>
+
+                    <option
+                        value="Grade 12"
+                        {% if grade == "Grade 12" %}
+                            selected
+                        {% endif %}
+                    >
+                        Grade 12
+                    </option>
+
+                </select>
+
+                <span class="form-help">
+                    Select the student's current grade level.
+                </span>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    + Add Student
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

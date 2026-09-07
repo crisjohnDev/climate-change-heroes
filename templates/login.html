@@ -1,0 +1,551 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Teacher Login</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'image/gameLogo.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'image/gameLogo.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'image/gameLogo.png' %}">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f0fdf4;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        /* =====================================================
+           LOGIN CONTAINER
+        ===================================================== */
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+
+        /* =====================================================
+           LOGIN CARD
+        ===================================================== */
+
+        .login-card {
+            background: #ffffff;
+
+            padding: 42px;
+
+            border-radius: 18px;
+
+            border: 1px solid #dcfce7;
+
+            box-shadow:
+                0 15px 45px rgba(22, 101, 52, 0.10);
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo-container {
+            text-align: center;
+
+            margin-bottom: 22px;
+        }
+
+
+        .logo {
+            width: 100px;
+            height: 100px;
+
+            object-fit: contain;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .login-header {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .login-header h1 {
+            font-size: 30px;
+
+            font-weight: 700;
+
+            color: #166534;
+
+            margin-bottom: 8px;
+        }
+
+
+        .login-header p {
+            font-size: 14px;
+
+            color: #6b7280;
+
+            line-height: 1.5;
+        }
+
+
+        .teacher-badge {
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 6px 14px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #374151;
+        }
+
+
+        .form-group input {
+            width: 100%;
+
+            height: 50px;
+
+            padding: 0 15px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
+        }
+
+
+        .form-group input:hover {
+            border-color: #86efac;
+        }
+
+
+        .form-group input:focus {
+            border-color: #16a34a;
+
+            box-shadow:
+                0 0 0 3px rgba(22, 163, 74, 0.12);
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
+
+        .login-button {
+            width: 100%;
+
+            height: 50px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #16a34a;
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .login-button:hover {
+            background: #15803d;
+
+            transform: translateY(-1px);
+        }
+
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           ALERTS
+        ===================================================== */
+
+        .alert {
+            padding: 12px 14px;
+
+            margin-bottom: 20px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            line-height: 1.4;
+        }
+
+
+        .alert-error {
+            background: #fef2f2;
+
+            color: #991b1b;
+
+            border: 1px solid #fecaca;
+        }
+
+
+        .alert-success {
+            background: #f0fdf4;
+
+            color: #166534;
+
+            border: 1px solid #bbf7d0;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .login-footer {
+            text-align: center;
+
+            margin-top: 25px;
+
+            font-size: 13px;
+
+            color: #9ca3af;
+        }
+
+
+        .login-footer strong {
+            color: #16a34a;
+        }
+
+
+        /* =====================================================
+           GAME DECORATION
+        ===================================================== */
+
+        .game-decoration {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+
+        .game-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #86efac;
+        }
+
+
+        .game-dot.active {
+            background: #16a34a;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 480px) {
+
+            body {
+                padding: 15px;
+            }
+
+
+            .login-card {
+                padding: 30px 22px;
+            }
+
+
+            .login-header h1 {
+                font-size: 25px;
+            }
+
+
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <div class="login-card">
+
+
+        <!-- =================================================
+             LOGO
+        ================================================== -->
+
+        <div class="logo-container">
+
+            <img
+                src="{% static 'image/gameLogo.png' %}"
+                alt="Game Logo"
+                class="logo"
+            >
+
+        </div>
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <div class="login-header">
+
+            <h1>
+                Teacher Login
+            </h1>
+
+            <p>
+                Sign in to manage your classes,
+                activities, and learning games.
+            </p>
+
+            <span class="teacher-badge">
+                Teacher Portal
+            </span>
+
+        </div>
+
+
+        <!-- =================================================
+             DJANGO MESSAGES
+        ================================================== -->
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div
+                    class="alert
+                    {% if message.tags == 'error' %}
+                        alert-error
+                    {% else %}
+                        alert-success
+                    {% endif %}
+                    "
+                >
+
+                    {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <!-- =================================================
+             LOGIN ERROR
+        ================================================== -->
+
+        {% if error %}
+
+            <div class="alert alert-error">
+
+                {{ error }}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             LOGIN FORM
+        ================================================== -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                    autofocus
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+
+                Login to Game
+
+            </button>
+
+        </form>
+
+
+        <!-- =================================================
+             GAME DECORATION
+        ================================================== -->
+
+        <div class="game-decoration">
+
+            <span class="game-dot"></span>
+
+            <span class="game-dot active"></span>
+
+            <span class="game-dot"></span>
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <div class="login-footer">
+
+            &copy; {% now "Y" %}
+            <strong>Learning Game</strong>.
+
+            All rights reserved.
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
