@@ -15,14 +15,6 @@ class Student(models.Model):
 
 class GameStatus(models.Model):
 
-    STATUS_CHOICES = [
-        ("not_started", "Not Started"),
-        ("playing", "Playing"),
-        ("paused", "Paused"),
-        ("game_over", "Game Over"),
-        ("completed", "Completed"),
-    ]
-
     student = models.OneToOneField(
         Student,
         on_delete=models.CASCADE,
@@ -31,39 +23,28 @@ class GameStatus(models.Model):
 
     status = models.CharField(
         max_length=20,
-        choices=STATUS_CHOICES,
         default="not_started"
     )
 
-    stage = models.IntegerField(
-        default=0
-    )
+    stage = models.IntegerField(default=0)
 
-    monster = models.IntegerField(
-        default=0
-    )
+    monster = models.IntegerField(default=0)
 
-    enemy_number = models.IntegerField(
-        default=0
-    )
+    enemy_number = models.IntegerField(default=0)
 
     difficulty = models.CharField(
-        max_length=30,
+        max_length=50,
         blank=True,
-        default=""
+        null=True
     )
 
-    hp = models.IntegerField(
-        default=0
-    )
+    hp = models.IntegerField(default=0)
 
-    max_hp = models.IntegerField(
-        default=100
-    )
+    max_hp = models.IntegerField(default=100)
+
+    # ADD THIS
+    score = models.IntegerField(default=0)
 
     updated_at = models.DateTimeField(
         auto_now=True
     )
-
-    def __str__(self):
-        return f"{self.student.name} - {self.status}"

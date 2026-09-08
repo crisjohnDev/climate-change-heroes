@@ -15,4 +15,9 @@ urlpatterns = [
     views.delete_student,
     name="delete_student"
 ),
+    path(
+        "dashboard/live-data/",
+        views.dashboard_live_data,
+        name="dashboard_live_data"
+    ),
 ]

@@ -2,9 +2,10 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Student, GameStatus
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_GET, require_POST
 
 
 def login_user(request):
@@ -37,13 +38,17 @@ def logout_user(request):
     logout(request)
     return redirect("login_user")
 
+# =========================================================
+# TEACHER DASHBOARD
+# =========================================================
+
 @login_required
 def dashboardView(request):
 
     from .models import Student, GameStatus
 
     # =========================================================
-    # STUDENTS
+    # STUDENTS + GAME STATUS
     # =========================================================
 
     students = (
@@ -83,27 +88,125 @@ def dashboardView(request):
         context
     )
 
+# =========================================================
+# REAL-TIME DASHBOARD DATA
+# =========================================================
+
 @login_required
+@require_GET
+def dashboard_live_data(request):
+
+    students = (
+        Student.objects
+        .select_related("game_status")
+        .order_by("-id")
+    )
+
+    total_students = Student.objects.count()
+
+    games_completed = GameStatus.objects.filter(
+        status="completed"
+    ).count()
+
+    active_students = GameStatus.objects.filter(
+        status="playing"
+    ).count()
+
+    # =====================================================
+    # STUDENT DATA
+    # =====================================================
+
+    student_data = []
+
+    for student in students:
+
+        game_status = getattr(
+            student,
+            "game_status",
+            None
+        )
+
+        game = None
+
+        if game_status:
+
+            game = {
+                "status": game_status.status,
+                "stage": game_status.stage,
+                "monster": game_status.monster,
+                "enemy_number": game_status.enemy_number,
+                "difficulty": game_status.difficulty or "",
+                "hp": game_status.hp,
+                "max_hp": game_status.max_hp,
+                "updated_at": (
+                    game_status.updated_at.strftime(
+                        "%b %d, %Y %I:%M %p"
+                    )
+                    if game_status.updated_at
+                    else ""
+                ),
+            }
+
+        student_data.append({
+            "id": student.id,
+            "name": student.name,
+            "grade": student.grade,
+            "score": student.score or 0,
+            "game": game,
+        })
+
+    # =====================================================
+    # LEADERBOARD
+    # =====================================================
+
+    leaderboard_queryset = (
+        Student.objects
+        .order_by("-score", "name")[:10]
+    )
+
+    leaderboard_data = []
+
+    for index, student in enumerate(
+        leaderboard_queryset,
+        start=1
+    ):
+
+        leaderboard_data.append({
+            "rank": index,
+            "name": student.name,
+            "score": student.score or 0,
+            "grade": student.grade,
+        })
+
+    # =====================================================
+    # RESPONSE
+    # =====================================================
+
+    return JsonResponse({
+        "total_students": total_students,
+        "games_completed": games_completed,
+        "active_students": active_students,
+        "students": student_data,
+        "leaderboard": leaderboard_data,
+    })
+
+
+# =========================================================
+# DELETE STUDENT
+# =========================================================
+
+@login_required
+@require_POST
 def delete_student(request, student_id):
 
-    if request.method != "POST":
-        return redirect("dashboard")
-
-    from .models import Student
-
-    try:
-        student = Student.objects.get(id=student_id)
-    except Student.DoesNotExist:
-        return redirect("dashboard")
+    student = get_object_or_404(
+        Student,
+        id=student_id
+    )
 
     student_name = student.name
 
     student.delete()
-
-    print(
-        "Student deleted: ",
-        student_name
-    )
 
     return redirect("dashboard")
 
@@ -145,7 +248,7 @@ def add_student(request):
         )
 
         # Return to dashboard
-        return redirect("teacher_dashboard")
+        return redirect("dashboard")
 
     return render(request, "pages/add_student.html")
 

@@ -4,344 +4,323 @@
 
 <style>
 
-    /* =========================================================
-       DASHBOARD
-    ========================================================= */
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
-    .page-header {
-        margin-bottom: 30px;
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    margin: 0 0 8px;
+}
+
+.page-header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STUDENTS SECTION
+========================================================= */
+
+.students-section {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.students-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.students-header h2 {
+    margin: 0;
+}
+
+.students-header p {
+    margin: 6px 0 0;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn-primary {
+    display: inline-block;
+    background: #111827;
+    color: #ffffff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1050px;
+}
+
+th {
+    text-align: left;
+    padding: 14px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+td {
+    padding: 16px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.student-name {
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 10px;
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+
+/* PLAYING */
+
+.status-playing {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.status-playing .status-dot {
+    background: #10b981;
+}
+
+
+/* COMPLETED */
+
+.status-completed {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.status-completed .status-dot {
+    background: #3b82f6;
+}
+
+
+/* GAME OVER */
+
+.status-game-over {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+.status-game-over .status-dot {
+    background: #ef4444;
+}
+
+
+/* PAUSED */
+
+.status-paused {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.status-paused .status-dot {
+    background: #f59e0b;
+}
+
+
+/* NOT STARTED */
+
+.status-not-started {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.status-not-started .status-dot {
+    background: #9ca3af;
+}
+
+
+/* =========================================================
+   GAME DATA
+========================================================= */
+
+.game-value {
+    font-weight: 600;
+}
+
+.hp-value {
+    font-weight: 600;
+}
+
+.updated-value {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LIVE INDICATOR
+========================================================= */
+
+.live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 10px;
+
+    background: #ecfdf5;
+    color: #047857;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+
+    animation: livePulse 1.5s infinite;
+}
+
+@keyframes livePulse {
+
+    0% {
+        opacity: 1;
+        transform: scale(1);
     }
 
-    .page-header h1 {
-        margin-bottom: 8px;
+    50% {
+        opacity: 0.4;
+        transform: scale(0.8);
     }
 
-    .page-header p {
-        margin: 0;
-        color: #6b7280;
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 
+}
 
-    /* =========================================================
-       METRICS
-    ========================================================= */
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #6b7280;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
 
     .stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-bottom: 35px;
-    }
-
-    .stat-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 22px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    }
-
-    .stat-label {
-        font-size: 14px;
-        color: #6b7280;
-        margin-bottom: 8px;
-    }
-
-    .stat-number {
-        font-size: 32px;
-        font-weight: 700;
-    }
-
-
-    /* =========================================================
-       QUICK ACTIONS
-    ========================================================= */
-
-    .section-title {
-        margin: 0 0 18px;
-    }
-
-    .actions {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        margin-bottom: 35px;
-    }
-
-    .action-card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 24px;
-
-        text-decoration: none;
-        color: inherit;
-
-        transition: 0.2s ease;
-    }
-
-    .action-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.07);
-    }
-
-    .action-card h3 {
-        margin: 0 0 6px;
-    }
-
-    .action-card p {
-        margin: 0;
-        color: #6b7280;
-    }
-
-    .action-link {
-        white-space: nowrap;
-        font-weight: 600;
-    }
-
-
-    /* =========================================================
-       STUDENTS SECTION
-    ========================================================= */
-
-    .students-section {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 24px;
+        grid-template-columns: 1fr;
     }
 
     .students-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
     }
 
-    .students-header h2 {
-        margin: 0;
-    }
-
-    .students-header p {
-        margin: 6px 0 0;
-        color: #6b7280;
-    }
-
-    .btn-primary {
-        display: inline-block;
-        background: #111827;
-        color: #ffffff;
-        padding: 10px 16px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .btn-primary:hover {
-        opacity: 0.9;
-    }
-
-
-    /* =========================================================
-       TABLE
-    ========================================================= */
-
-    .table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 1200px;
-    }
-
-    th {
-        text-align: left;
-        padding: 14px;
-        background: #f9fafb;
-        border-bottom: 1px solid #e5e7eb;
-        font-size: 13px;
-        color: #6b7280;
-        white-space: nowrap;
-    }
-
-    td {
-        padding: 16px 14px;
-        border-bottom: 1px solid #f0f0f0;
-        white-space: nowrap;
-    }
-
-    tr:last-child td {
-        border-bottom: none;
-    }
-
-    .student-name {
-        font-weight: 600;
-    }
-
-
-    /* =========================================================
-       STATUS
-    ========================================================= */
-
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-
-        padding: 6px 10px;
-        border-radius: 999px;
-
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        display: inline-block;
-    }
-
-
-    /* PLAYING */
-
-    .status-playing {
-        background: #ecfdf5;
-        color: #047857;
-    }
-
-    .status-playing .status-dot {
-        background: #10b981;
-    }
-
-
-    /* COMPLETED */
-
-    .status-completed {
-        background: #eff6ff;
-        color: #1d4ed8;
-    }
-
-    .status-completed .status-dot {
-        background: #3b82f6;
-    }
-
-
-    /* GAME OVER */
-
-    .status-game-over {
-        background: #fef2f2;
-        color: #b91c1c;
-    }
-
-    .status-game-over .status-dot {
-        background: #ef4444;
-    }
-
-
-    /* PAUSED */
-
-    .status-paused {
-        background: #fffbeb;
-        color: #b45309;
-    }
-
-    .status-paused .status-dot {
-        background: #f59e0b;
-    }
-
-
-    /* NOT STARTED */
-
-    .status-not-started {
-        background: #f3f4f6;
-        color: #4b5563;
-    }
-
-    .status-not-started .status-dot {
-        background: #9ca3af;
-    }
-
-
-    /* =========================================================
-       HP
-    ========================================================= */
-
-    .hp-value {
-        font-weight: 600;
-    }
-
-
-    /* =========================================================
-       DELETE BUTTON
-    ========================================================= */
-
-    .btn-delete {
-        border: none;
-        background: #dc2626;
-        color: #ffffff;
-
-        padding: 8px 13px;
-
-        border-radius: 7px;
-
-        font-size: 13px;
-        font-weight: 600;
-
-        cursor: pointer;
-
-        transition: 0.2s ease;
-    }
-
-    .btn-delete:hover {
-        background: #b91c1c;
-    }
-
-    .btn-delete:active {
-        transform: scale(0.97);
-    }
-
-
-    /* =========================================================
-       EMPTY
-    ========================================================= */
-
-    .empty-state {
-        text-align: center;
-        padding: 50px 20px;
-        color: #6b7280;
-    }
-
-
-    /* =========================================================
-       RESPONSIVE
-    ========================================================= */
-
-    @media (max-width: 900px) {
-
-        .stats {
-            grid-template-columns: 1fr;
-        }
-
-        .actions {
-            grid-template-columns: 1fr;
-        }
-
-        .students-header {
-            align-items: flex-start;
-            gap: 15px;
-            flex-direction: column;
-        }
-
-    }
+}
 
 </style>
 
@@ -352,10 +331,13 @@
 
 <div class="page-header">
 
-    <h1>Teacher Dashboard</h1>
+    <h1>
+        Teacher Dashboard
+    </h1>
 
     <p>
-        Manage your students and monitor their learning game performance.
+        Manage your students and monitor their learning game
+        performance in real time.
     </p>
 
 </div>
@@ -367,18 +349,25 @@
 
 <div class="stats">
 
+    <!-- TOTAL STUDENTS -->
+
     <div class="stat-card">
 
         <div class="stat-label">
             Total Students
         </div>
 
-        <div class="stat-number">
+        <div
+            class="stat-number"
+            id="total-students"
+        >
             {{ total_students|default:"0" }}
         </div>
 
     </div>
 
+
+    <!-- COMPLETED -->
 
     <div class="stat-card">
 
@@ -386,12 +375,17 @@
             Games Completed
         </div>
 
-        <div class="stat-number">
+        <div
+            class="stat-number"
+            id="games-completed"
+        >
             {{ games_completed|default:"0" }}
         </div>
 
     </div>
 
+
+    <!-- ACTIVE -->
 
     <div class="stat-card">
 
@@ -399,72 +393,14 @@
             Active Students
         </div>
 
-        <div class="stat-number">
+        <div
+            class="stat-number"
+            id="active-students"
+        >
             {{ active_students|default:"0" }}
         </div>
 
     </div>
-
-</div>
-
-
-<!-- =========================================================
-     QUICK ACTIONS
-========================================================= -->
-
-<h2 class="section-title">
-    Quick Actions
-</h2>
-
-
-<div class="actions">
-
-    <a
-        href="{% url 'add_student' %}"
-        class="action-card"
-    >
-
-        <div>
-
-            <h3>
-                Add Student
-            </h3>
-
-            <p>
-                Register a new student and assign them to your active class roster.
-            </p>
-
-        </div>
-
-        <span class="action-link">
-            Add Student &rarr;
-        </span>
-
-    </a>
-
-
-    <a
-        href="#"
-        class="action-card"
-    >
-
-        <div>
-
-            <h3>
-                Leaderboard
-            </h3>
-
-            <p>
-                View student overall scores, rankings, and game session performance metrics.
-            </p>
-
-        </div>
-
-        <span class="action-link">
-            View Leaderboard &rarr;
-        </span>
-
-    </a>
 
 </div>
 
@@ -475,6 +411,9 @@
 
 <section class="students-section">
 
+
+    <!-- HEADER -->
+
     <div class="students-header">
 
         <div>
@@ -484,21 +423,39 @@
             </h2>
 
             <p>
-                Monitor the current game progress of your students.
+                Monitor your students' current game activity,
+                progress, health, enemies, and game status.
             </p>
 
         </div>
 
 
-        <a
-            href="{% url 'add_student' %}"
-            class="btn-primary"
-        >
-            + Add Student
-        </a>
+        <div style="display: flex; align-items: center; gap: 12px;">
+
+            <span class="live-indicator">
+
+                <span class="live-dot"></span>
+
+                LIVE MONITORING
+
+            </span>
+
+
+            <a
+                href="{% url 'add_student' %}"
+                class="btn-primary"
+            >
+                + Add Student
+            </a>
+
+        </div>
 
     </div>
 
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
 
     <div class="table-wrapper">
 
@@ -546,10 +503,6 @@
                             Last Update
                         </th>
 
-                        <th>
-                            Action
-                        </th>
-
                     </tr>
 
                 </thead>
@@ -561,7 +514,9 @@
 
                         <tr>
 
-                            <!-- STUDENT -->
+                            <!-- =================================
+                                 STUDENT
+                            ================================== -->
 
                             <td class="student-name">
 
@@ -570,16 +525,20 @@
                             </td>
 
 
-                            <!-- GRADE -->
+                            <!-- =================================
+                                 GRADE
+                            ================================== -->
 
                             <td>
 
-                                {{ student.grade }}
+                                {{ student.grade|default:"—" }}
 
                             </td>
 
 
-                            <!-- STATUS -->
+                            <!-- =================================
+                                 GAME STATUS
+                            ================================== -->
 
                             <td>
 
@@ -652,13 +611,20 @@
                             </td>
 
 
-                            <!-- STAGE -->
+                            <!-- =================================
+                                 STAGE
+                            ================================== -->
 
                             <td>
 
                                 {% if student.game_status %}
 
-                                    Stage {{ student.game_status.stage }}
+                                    <span class="game-value">
+
+                                        Stage
+                                        {{ student.game_status.stage }}
+
+                                    </span>
 
                                 {% else %}
 
@@ -669,13 +635,20 @@
                             </td>
 
 
-                            <!-- MONSTER -->
+                            <!-- =================================
+                                 MONSTER
+                            ================================== -->
 
                             <td>
 
                                 {% if student.game_status %}
 
-                                    Monster {{ student.game_status.monster }}
+                                    <span class="game-value">
+
+                                        Monster
+                                        {{ student.game_status.monster }}
+
+                                    </span>
 
                                 {% else %}
 
@@ -686,7 +659,9 @@
                             </td>
 
 
-                            <!-- ENEMY -->
+                            <!-- =================================
+                                 ENEMY
+                            ================================== -->
 
                             <td>
 
@@ -694,11 +669,18 @@
 
                                     {% if student.game_status.enemy_number > 3 %}
 
-                                        Boss
+                                        <span class="game-value">
+                                            Boss
+                                        </span>
 
                                     {% else %}
 
-                                        Enemy {{ student.game_status.enemy_number }}
+                                        <span class="game-value">
+
+                                            Enemy
+                                            {{ student.game_status.enemy_number }}
+
+                                        </span>
 
                                     {% endif %}
 
@@ -711,7 +693,9 @@
                             </td>
 
 
-                            <!-- DIFFICULTY -->
+                            <!-- =================================
+                                 DIFFICULTY
+                            ================================== -->
 
                             <td>
 
@@ -728,7 +712,9 @@
                             </td>
 
 
-                            <!-- HP -->
+                            <!-- =================================
+                                 PLAYER HP
+                            ================================== -->
 
                             <td>
 
@@ -737,7 +723,9 @@
                                     <span class="hp-value">
 
                                         {{ student.game_status.hp }}
+
                                         /
+
                                         {{ student.game_status.max_hp }}
 
                                     </span>
@@ -751,43 +739,25 @@
                             </td>
 
 
-                            <!-- UPDATED -->
+                            <!-- =================================
+                                 LAST UPDATE
+                            ================================== -->
 
                             <td>
 
                                 {% if student.game_status %}
 
-                                    {{ student.game_status.updated_at|date:"M d, Y h:i A" }}
+                                    <span class="updated-value">
+
+                                        {{ student.game_status.updated_at|date:"M d, Y h:i:s A" }}
+
+                                    </span>
 
                                 {% else %}
 
                                     —
 
                                 {% endif %}
-
-                            </td>
-
-
-                            <!-- ACTION -->
-
-                            <td>
-
-                                <form
-                                    method="POST"
-                                    action="{% url 'delete_student' student.id %}"
-                                    onsubmit="return confirm('Are you sure you want to delete {{ student.name|escapejs }}?');"
-                                >
-
-                                    {% csrf_token %}
-
-                                    <button
-                                        type="submit"
-                                        class="btn-delete"
-                                    >
-                                        Delete
-                                    </button>
-
-                                </form>
 
                             </td>
 
@@ -822,5 +792,75 @@
 
 </section>
 
+
+<!-- =========================================================
+     AUTO REFRESH
+========================================================= -->
+
+<script>
+
+(function () {
+
+    /*
+     * Refresh the dashboard automatically.
+     *
+     * This does NOT require a leaderboard or score field.
+     *
+     * The page reloads every 5 seconds so the teacher can see
+     * updated GameStatus information.
+     */
+
+    const REFRESH_INTERVAL = 5000;
+
+    let refreshTimer = null;
+
+
+    function startMonitoring() {
+
+        refreshTimer = setInterval(function () {
+
+            /*
+             * Do not refresh while the browser tab is hidden.
+             */
+
+            if (document.hidden) {
+                return;
+            }
+
+
+            /*
+             * Reload the dashboard.
+             *
+             * Django will retrieve the latest Student and
+             * GameStatus records.
+             */
+
+            window.location.reload();
+
+        }, REFRESH_INTERVAL);
+
+    }
+
+
+    startMonitoring();
+
+
+    /*
+     * Stop timer when page is leaving.
+     */
+
+    window.addEventListener("beforeunload", function () {
+
+        if (refreshTimer) {
+
+            clearInterval(refreshTimer);
+
+        }
+
+    });
+
+})();
+
+</script>
 
 {% endblock %}
