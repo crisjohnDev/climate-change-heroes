@@ -103,6 +103,29 @@
 
 
 /* =========================================================
+   DELETE BUTTON
+========================================================= */
+
+.btn-delete {
+    display: inline-block;
+    background: #dc2626;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-delete:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
    TABLE
 ========================================================= */
 
@@ -114,7 +137,7 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 1050px;
+    min-width: 1150px;
 }
 
 th {
@@ -150,10 +173,8 @@ tr:last-child td {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-
     padding: 6px 10px;
     border-radius: 999px;
-
     font-size: 13px;
     font-weight: 600;
 }
@@ -252,14 +273,10 @@ tr:last-child td {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-
     padding: 6px 10px;
-
     background: #ecfdf5;
     color: #047857;
-
     border-radius: 999px;
-
     font-size: 12px;
     font-weight: 700;
 }
@@ -269,7 +286,6 @@ tr:last-child td {
     height: 8px;
     border-radius: 50%;
     background: #10b981;
-
     animation: livePulse 1.5s infinite;
 }
 
@@ -367,7 +383,7 @@ tr:last-child td {
     </div>
 
 
-    <!-- COMPLETED -->
+    <!-- GAMES COMPLETED -->
 
     <div class="stat-card">
 
@@ -385,7 +401,7 @@ tr:last-child td {
     </div>
 
 
-    <!-- ACTIVE -->
+    <!-- ACTIVE STUDENTS -->
 
     <div class="stat-card">
 
@@ -411,7 +427,6 @@ tr:last-child td {
 
 <section class="students-section">
 
-
     <!-- HEADER -->
 
     <div class="students-header">
@@ -430,7 +445,15 @@ tr:last-child td {
         </div>
 
 
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div
+            style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            "
+        >
+
+            <!-- LIVE STATUS -->
 
             <span class="live-indicator">
 
@@ -440,6 +463,8 @@ tr:last-child td {
 
             </span>
 
+
+            <!-- ADD STUDENT -->
 
             <a
                 href="{% url 'add_student' %}"
@@ -503,6 +528,10 @@ tr:last-child td {
                             Last Update
                         </th>
 
+                        <th>
+                            Action
+                        </th>
+
                     </tr>
 
                 </thead>
@@ -546,7 +575,12 @@ tr:last-child td {
 
                                     {% if student.game_status.status == "playing" %}
 
-                                        <span class="status-badge status-playing">
+                                        <span
+                                            class="
+                                                status-badge
+                                                status-playing
+                                            "
+                                        >
 
                                             <span class="status-dot"></span>
 
@@ -556,7 +590,12 @@ tr:last-child td {
 
                                     {% elif student.game_status.status == "completed" %}
 
-                                        <span class="status-badge status-completed">
+                                        <span
+                                            class="
+                                                status-badge
+                                                status-completed
+                                            "
+                                        >
 
                                             <span class="status-dot"></span>
 
@@ -566,7 +605,12 @@ tr:last-child td {
 
                                     {% elif student.game_status.status == "game_over" %}
 
-                                        <span class="status-badge status-game-over">
+                                        <span
+                                            class="
+                                                status-badge
+                                                status-game-over
+                                            "
+                                        >
 
                                             <span class="status-dot"></span>
 
@@ -576,7 +620,12 @@ tr:last-child td {
 
                                     {% elif student.game_status.status == "paused" %}
 
-                                        <span class="status-badge status-paused">
+                                        <span
+                                            class="
+                                                status-badge
+                                                status-paused
+                                            "
+                                        >
 
                                             <span class="status-dot"></span>
 
@@ -586,7 +635,12 @@ tr:last-child td {
 
                                     {% else %}
 
-                                        <span class="status-badge status-not-started">
+                                        <span
+                                            class="
+                                                status-badge
+                                                status-not-started
+                                            "
+                                        >
 
                                             <span class="status-dot"></span>
 
@@ -598,7 +652,12 @@ tr:last-child td {
 
                                 {% else %}
 
-                                    <span class="status-badge status-not-started">
+                                    <span
+                                        class="
+                                            status-badge
+                                            status-not-started
+                                        "
+                                    >
 
                                         <span class="status-dot"></span>
 
@@ -761,6 +820,33 @@ tr:last-child td {
 
                             </td>
 
+
+                            <!-- =================================
+                                 DELETE
+                            ================================== -->
+
+                            <td>
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'delete_student' student.id %}"
+                                    onsubmit="return confirm('Are you sure you want to delete {{ student.name|escapejs }}? This action cannot be undone.');"
+                                    style="margin: 0;"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn-delete"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </td>
+
                         </tr>
 
                     {% endfor %}
@@ -770,6 +856,8 @@ tr:last-child td {
             </table>
 
         {% else %}
+
+            <!-- EMPTY STATE -->
 
             <div class="empty-state">
 
@@ -804,10 +892,8 @@ tr:last-child td {
     /*
      * Refresh the dashboard automatically.
      *
-     * This does NOT require a leaderboard or score field.
-     *
-     * The page reloads every 5 seconds so the teacher can see
-     * updated GameStatus information.
+     * The page reloads every 5 seconds so the teacher
+     * can see the latest GameStatus information.
      */
 
     const REFRESH_INTERVAL = 5000;
@@ -830,9 +916,6 @@ tr:last-child td {
 
             /*
              * Reload the dashboard.
-             *
-             * Django will retrieve the latest Student and
-             * GameStatus records.
              */
 
             window.location.reload();
