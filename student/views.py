@@ -6,12 +6,43 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Student, GameStatus
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET, require_POST
-
+from django.contrib.auth.models import User
 
 def login_user(request):
+
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+
+        # =================================================
+        # VALIDATION
+        # =================================================
+
+        if not username:
+
+            return render(
+                request,
+                "login.html",
+                {
+                    "error": "Please enter your username."
+                }
+            )
+
+        if not password:
+
+            return render(
+                request,
+                "login.html",
+                {
+                    "error": "Please enter your password.",
+                    "username": username
+                }
+            )
+
+        # =================================================
+        # AUTHENTICATE
+        # =================================================
 
         user = authenticate(
             request,
@@ -19,19 +50,199 @@ def login_user(request):
             password=password
         )
 
+        # =================================================
+        # LOGIN SUCCESS
+        # =================================================
+
         if user is not None:
+
             login(request, user)
 
-            if user.is_superuser:
-                return redirect("dashboard")
+            return redirect("dashboard")
 
-            return redirect("login")
+        # =================================================
+        # LOGIN FAILED
+        # =================================================
 
-        return render(request, "login.html", {
-            "error": "Invalid username or password."
-        })
+        return render(
+            request,
+            "login.html",
+            {
+                "error": "Invalid username or password.",
+                "username": username
+            }
+        )
 
-    return render(request, "login.html")
+    # =====================================================
+    # GET REQUEST
+    # =====================================================
+
+    return render(
+        request,
+        "login.html"
+    )
+
+def teacher_register(request):
+
+    # =====================================================
+    # ALREADY LOGGED IN
+    # =====================================================
+
+    if request.user.is_authenticated:
+
+        return redirect("dashboard")
+
+
+    # =====================================================
+    # POST
+    # =====================================================
+
+    if request.method == "POST":
+
+        username = request.POST.get(
+            "username",
+            ""
+        ).strip()
+
+        password = request.POST.get(
+            "password",
+            ""
+        )
+
+        confirm_password = request.POST.get(
+            "confirm_password",
+            ""
+        )
+
+
+        # =================================================
+        # USERNAME REQUIRED
+        # =================================================
+
+        if not username:
+
+            return render(
+                request,
+                "teacher_register.html",
+                {
+                    "error": "Teacher username is required.",
+                    "username": username,
+                }
+            )
+
+
+        # =================================================
+        # PASSWORD REQUIRED
+        # =================================================
+
+        if not password:
+
+            return render(
+                request,
+                "teacher_register.html",
+                {
+                    "error": "Password is required.",
+                    "username": username,
+                }
+            )
+
+
+        # =================================================
+        # CONFIRM PASSWORD REQUIRED
+        # =================================================
+
+        if not confirm_password:
+
+            return render(
+                request,
+                "teacher_register.html",
+                {
+                    "error": "Please re-enter your password.",
+                    "username": username,
+                }
+            )
+
+
+        # =================================================
+        # PASSWORD MATCH
+        # =================================================
+
+        if password != confirm_password:
+
+            return render(
+                request,
+                "teacher_register.html",
+                {
+                    "error": "Passwords do not match.",
+                    "username": username,
+                }
+            )
+
+
+        # =================================================
+        # CHECK USERNAME
+        # =================================================
+
+        if User.objects.filter(
+            username__iexact=username
+        ).exists():
+
+            return render(
+                request,
+                "teacher_register.html",
+                {
+                    "error": "That teacher username is already taken.",
+                    "username": username,
+                }
+            )
+
+
+        # =================================================
+        # CREATE TEACHER ACCOUNT
+        # =================================================
+
+        teacher = User.objects.create_user(
+            username=username,
+            password=password
+        )
+
+
+        # =================================================
+        # TEACHER PERMISSIONS
+        # =================================================
+
+        teacher.is_staff = False
+
+        teacher.is_superuser = False
+
+        teacher.save()
+
+
+        # =================================================
+        # LOGIN AUTOMATICALLY
+        # =================================================
+
+        login(
+            request,
+            teacher
+        )
+
+
+        # =================================================
+        # DASHBOARD
+        # =================================================
+
+        return redirect("dashboard")
+
+
+    # =====================================================
+    # GET
+    # =====================================================
+
+    return render(
+        request,
+        "teacher_register.html"
+    )
 
 
 def logout_user(request):
@@ -42,38 +253,31 @@ def logout_user(request):
 # TEACHER DASHBOARD
 # =========================================================
 
-@login_required
+@login_required(login_url="teacher_login")
 def dashboardView(request):
 
     from .models import Student, GameStatus
 
-    # =========================================================
-    # STUDENTS + GAME STATUS
-    # =========================================================
+    teacher = request.user
 
     students = (
         Student.objects
+        .filter(teacher=teacher)
         .select_related("game_status")
         .order_by("-id")
     )
 
-    # =========================================================
-    # METRICS
-    # =========================================================
-
-    total_students = Student.objects.count()
+    total_students = students.count()
 
     games_completed = GameStatus.objects.filter(
+        student__teacher=teacher,
         status="completed"
     ).count()
 
     active_students = GameStatus.objects.filter(
+        student__teacher=teacher,
         status="playing"
     ).count()
-
-    # =========================================================
-    # CONTEXT
-    # =========================================================
 
     context = {
         "students": students,
@@ -88,27 +292,35 @@ def dashboardView(request):
         context
     )
 
+
 # =========================================================
 # REAL-TIME DASHBOARD DATA
 # =========================================================
 
-@login_required
+@login_required(login_url="teacher_login")
 @require_GET
 def dashboard_live_data(request):
 
+    from .models import Student, GameStatus
+
+    teacher = request.user
+
     students = (
         Student.objects
+        .filter(teacher=teacher)
         .select_related("game_status")
         .order_by("-id")
     )
 
-    total_students = Student.objects.count()
+    total_students = students.count()
 
     games_completed = GameStatus.objects.filter(
+        student__teacher=teacher,
         status="completed"
     ).count()
 
     active_students = GameStatus.objects.filter(
+        student__teacher=teacher,
         status="playing"
     ).count()
 
@@ -138,6 +350,7 @@ def dashboard_live_data(request):
                 "difficulty": game_status.difficulty or "",
                 "hp": game_status.hp,
                 "max_hp": game_status.max_hp,
+                "score": game_status.score or 0,
                 "updated_at": (
                     game_status.updated_at.strftime(
                         "%b %d, %Y %I:%M %p"
@@ -151,7 +364,11 @@ def dashboard_live_data(request):
             "id": student.id,
             "name": student.name,
             "grade": student.grade,
-            "score": student.score or 0,
+            "score": (
+                game_status.score
+                if game_status
+                else 0
+            ),
             "game": game,
         })
 
@@ -160,21 +377,30 @@ def dashboard_live_data(request):
     # =====================================================
 
     leaderboard_queryset = (
-        Student.objects
-        .order_by("-score", "name")[:10]
+        GameStatus.objects
+        .filter(
+            student__teacher=teacher
+        )
+        .select_related("student")
+        .order_by(
+            "-score",
+            "student__name"
+        )[:10]
     )
 
     leaderboard_data = []
 
-    for index, student in enumerate(
+    for index, game_status in enumerate(
         leaderboard_queryset,
         start=1
     ):
 
+        student = game_status.student
+
         leaderboard_data.append({
             "rank": index,
             "name": student.name,
-            "score": student.score or 0,
+            "score": game_status.score or 0,
             "grade": student.grade,
         })
 
@@ -189,7 +415,6 @@ def dashboard_live_data(request):
         "students": student_data,
         "leaderboard": leaderboard_data,
     })
-
 
 # =========================================================
 # DELETE STUDENT
@@ -210,16 +435,28 @@ def delete_student(request, student_id):
 
     return redirect("dashboard")
 
-@login_required(login_url="login")
+@login_required(login_url="teacher_login")
 def add_student(request):
 
     if request.method == "POST":
 
-        name = request.POST.get("name", "").strip()
-        grade = request.POST.get("grade", "").strip()
+        name = request.POST.get(
+            "name",
+            ""
+        ).strip()
 
-        # Validation
+        grade = request.POST.get(
+            "grade",
+            ""
+        ).strip()
+
+
+        # =====================================================
+        # VALIDATION
+        # =====================================================
+
         if not name:
+
             return render(
                 request,
                 "pages/add_student.html",
@@ -230,7 +467,9 @@ def add_student(request):
                 }
             )
 
+
         if not grade:
+
             return render(
                 request,
                 "pages/add_student.html",
@@ -241,16 +480,29 @@ def add_student(request):
                 }
             )
 
-        # Create student
+
+        # =====================================================
+        # CREATE STUDENT
+        # =====================================================
+
         Student.objects.create(
+            teacher=request.user,
             name=name,
             grade=grade
         )
 
-        # Return to dashboard
+
+        # =====================================================
+        # RETURN TO DASHBOARD
+        # =====================================================
+
         return redirect("dashboard")
 
-    return render(request, "pages/add_student.html")
+
+    return render(
+        request,
+        "pages/add_student.html"
+    )
 
 @csrf_exempt
 def check_student(request):

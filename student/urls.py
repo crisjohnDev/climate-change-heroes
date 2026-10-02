@@ -1,11 +1,12 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import logout
 
 
 urlpatterns = [
     path("api/check-student/", views.check_student,name="check_student"),
     path('', views.login_user, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path("logout/", logout, name="logout"),
     path('dashboard/', views.dashboardView, name='dashboard'),
     path("teacher/students/add/", views.add_student, name="add_student"),
     path("check-student/", views.check_student, name="check_student"),
@@ -20,4 +21,9 @@ urlpatterns = [
         views.dashboard_live_data,
         name="dashboard_live_data"
     ),
+    path(
+    "teacher/register/",
+    views.teacher_register,
+    name="teacher_register"
+),
 ]

@@ -14,6 +14,7 @@
 
     <title>Teacher Login</title>
 
+
     <!-- =====================================================
          FAVICON
     ====================================================== -->
@@ -254,6 +255,99 @@
 
 
         /* =====================================================
+           PASSWORD WRAPPER
+        ===================================================== */
+
+        .password-wrapper {
+
+            position: relative;
+
+            width: 100%;
+        }
+
+
+        .password-wrapper input {
+
+            padding-right: 50px;
+        }
+
+
+        /* =====================================================
+           SHOW / HIDE PASSWORD BUTTON
+        ===================================================== */
+
+        .password-toggle {
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 14px;
+
+            transform: translateY(-50%);
+
+            width: 30px;
+
+            height: 30px;
+
+            padding: 0;
+
+            border: none;
+
+            background: transparent;
+
+            color: #6b7280;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 6px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .password-toggle:hover {
+
+            background: #f0fdf4;
+
+            color: #16a34a;
+        }
+
+
+        .password-toggle:focus {
+
+            outline: none;
+
+            box-shadow:
+                0 0 0 3px rgba(22, 163, 74, 0.12);
+        }
+
+
+        .password-toggle svg {
+
+            width: 20px;
+
+            height: 20px;
+
+            stroke: currentColor;
+
+            fill: none;
+
+            stroke-width: 2;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+        }
+
+
+        /* =====================================================
            LOGIN BUTTON
         ===================================================== */
 
@@ -296,8 +390,52 @@
 
 
         /* =====================================================
+           CREATE TEACHER ACCOUNT
+        ====================================================== */
+
+        .create-account {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            color: #6b7280;
+
+            line-height: 1.5;
+        }
+
+
+        .create-account a {
+
+            display: inline-block;
+
+            margin-top: 5px;
+
+            color: #16a34a;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+
+        .create-account a:hover {
+
+            color: #15803d;
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
            ALERTS
-        ===================================================== */
+        ====================================================== */
 
         .alert {
 
@@ -334,128 +472,8 @@
 
 
         /* =====================================================
-           DOWNLOAD GAME
-        ===================================================== */
-
-        .download-game {
-
-            margin-top: 18px;
-        }
-
-
-        .download-button {
-
-            width: 100%;
-
-            min-height: 60px;
-
-            padding: 10px 16px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 12px;
-
-            text-decoration: none;
-
-            background: #f0fdf4;
-
-            color: #166534;
-
-            border: 1px solid #bbf7d0;
-
-            border-radius: 9px;
-
-            transition: 0.2s ease;
-        }
-
-
-        .download-button:hover {
-
-            background: #dcfce7;
-
-            border-color: #86efac;
-
-            transform: translateY(-1px);
-        }
-
-
-        .download-button:active {
-
-            transform: translateY(0);
-        }
-
-
-        /* =====================================================
-           DOWNLOAD ICON
-        ===================================================== */
-
-        .download-icon {
-
-            width: 36px;
-
-            height: 36px;
-
-            min-width: 36px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background: #16a34a;
-
-            color: #ffffff;
-
-            border-radius: 8px;
-
-            font-size: 19px;
-
-            font-weight: bold;
-        }
-
-
-        /* =====================================================
-           DOWNLOAD TEXT
-        ===================================================== */
-
-        .download-text {
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: flex-start;
-
-            line-height: 1.2;
-        }
-
-
-        .download-text strong {
-
-            font-size: 14px;
-
-            color: #166534;
-        }
-
-
-        .download-text small {
-
-            margin-top: 4px;
-
-            font-size: 11px;
-
-            color: #6b7280;
-        }
-
-
-        /* =====================================================
            GAME DECORATION
-        ===================================================== */
+        ====================================================== */
 
         .game-decoration {
 
@@ -489,7 +507,7 @@
 
         /* =====================================================
            FOOTER
-        ===================================================== */
+        ====================================================== */
 
         .login-footer {
 
@@ -511,7 +529,7 @@
 
         /* =====================================================
            MOBILE
-        ===================================================== */
+        ====================================================== */
 
         @media (max-width: 480px) {
 
@@ -546,12 +564,6 @@
                 width: 80px;
 
                 height: 80px;
-            }
-
-
-            .download-button {
-
-                min-height: 58px;
             }
 
         }
@@ -688,14 +700,50 @@
                     Password
                 </label>
 
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="passwordToggle"
+                        aria-label="Show password"
+                        title="Show password"
+                    >
+
+                        <!-- EYE ICON -->
+
+                        <svg
+                            id="eyeIcon"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+
+                            <path
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="2.5"
+                            ></circle>
+
+                        </svg>
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -715,33 +763,19 @@
 
 
         <!-- =================================================
-             DOWNLOAD GAME
+             CREATE TEACHER ACCOUNT
         ================================================== -->
 
-        <div class="download-game">
+        <div class="create-account">
 
-            <a
-                href="{% static 'game/climate-change-heroes.apk' %}"
-                class="download-button"
-                download
-            >
+            <span>
+                Don't have a teacher account?
+            </span>
 
-                <span class="download-icon">
-                    ↓
-                </span>
+            <br>
 
-                <span class="download-text">
-
-                    <strong>
-                        Download Game
-                    </strong>
-
-                    <small>
-                        Download the Android game
-                    </small>
-
-                </span>
-
+            <a href="{% url 'teacher_register' %}">
+                Create Teacher Account
             </a>
 
         </div>
@@ -783,6 +817,111 @@
 
 
 </div>
+
+
+<!-- =========================================================
+     SHOW / HIDE PASSWORD JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const passwordToggle =
+        document.getElementById("passwordToggle");
+
+    const eyeIcon =
+        document.getElementById("eyeIcon");
+
+
+    passwordToggle.addEventListener(
+        "click",
+        function () {
+
+            if (
+                passwordInput.type === "password"
+            ) {
+
+                passwordInput.type = "text";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+                passwordToggle.setAttribute(
+                    "title",
+                    "Hide password"
+                );
+
+
+                eyeIcon.innerHTML = `
+
+                    <path
+                        d="M3 3l18 18"
+                    ></path>
+
+                    <path
+                        d="M10.6 10.6
+                           a2 2 0 0 0 2.8 2.8"
+                    ></path>
+
+                    <path
+                        d="M9.9 5.2
+                           A10.7 10.7 0 0 1 12 5
+                           c6 0 9.5 7 9.5 7
+                           a18.4 18.4 0 0 1-3.2 3.9"
+                    ></path>
+
+                    <path
+                        d="M6.2 6.2
+                           C3.8 8.1 2.5 12 2.5 12
+                           s3.5 6 9.5 6
+                           c1.5 0 2.8-.3 4-.8"
+                    ></path>
+
+                `;
+
+            } else {
+
+                passwordInput.type = "password";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+                passwordToggle.setAttribute(
+                    "title",
+                    "Show password"
+                );
+
+
+                eyeIcon.innerHTML = `
+
+                    <path
+                        d="M2.5 12
+                           s3.5-6 9.5-6
+                           9.5 6 9.5 6
+                           -3.5 6-9.5 6
+                           -9.5-6-9.5-6z"
+                    ></path>
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="2.5"
+                    ></circle>
+
+                `;
+
+            }
+
+        }
+    );
+
+</script>
 
 
 </body>
