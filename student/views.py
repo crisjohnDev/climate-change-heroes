@@ -247,7 +247,7 @@ def teacher_register(request):
 
 def logout_user(request):
     logout(request)
-    return redirect("login_user")
+    return redirect("login")
 
 # =========================================================
 # TEACHER DASHBOARD

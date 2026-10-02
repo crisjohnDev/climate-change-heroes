@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 urlpatterns = [
     path("api/check-student/", views.check_student,name="check_student"),
     path("", views.login_user, name='login'),
-    path("logout/", logout, name="logout"),
+    path("logout/", views.logout_user, name="logout"),
     path('dashboard/', views.dashboardView, name='dashboard'),
     path("teacher/students/add/", views.add_student, name="add_student"),
     path("check-student/", views.check_student, name="check_student"),
